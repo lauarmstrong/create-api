@@ -2,14 +2,14 @@
   "dev": {
     "driver": "pg",
     "host": "localhost",
-    "database": "persons_dev",
+    "database": "products_dev",
     "user": "lauren_armstrong",
     "password": "armstrong123"
   },
   "test": {
     "driver": "pg",
     "host": "localhost",
-    "database": "persons_dev",
+    "database": "products_dev",
     "user": "test_user",
     "password": "armstrong123"
   }
