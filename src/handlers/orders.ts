@@ -1,28 +1,26 @@
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { Person, PersonStore } from "../models/person";
+import { Order, OrderStore } from "../models/order";
 
-const store = new PersonStore();
+const store = new OrderStore();
 
 const index = async (_req: Request, res: Response) => {
-  const persons = await store.index();
-  res.json(persons);
+  const orders = await store.index();
+  res.json(orders);
 };
 
 const show = async (req: Request, res: Response) => {
-  const person = await store.show(req.params.id);
-  res.json(person);
+  const order = await store.show(req.params.id);
+  res.json(order);
 };
 
 const create = async (req: Request, res: Response) => {
-  const person: Person = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    age: req.body.age,
-    city: req.body.city,
-    profession: req.body.profession,
+  const order: Order = {
+    timestamp: req.body.timestamp,
+    user_id: req.body.user_id,
+    status: req.body.status,
   };
-  //Only logged-in users can create a person
+  //Only logged-in users can create an order
   //   try {
   //     const authorizationHeader = req.headers.authorization
   //     const token = authorizationHeader.split(' ')[1]
@@ -35,8 +33,8 @@ const create = async (req: Request, res: Response) => {
   //   }
 
   try {
-    const newPerson = await store.create(person);
-    res.json(newPerson);
+    const newOrder = await store.create(order);
+    res.json(newOrder);
   } catch (error) {
     res.status(400);
     res.json(error);
@@ -48,11 +46,11 @@ const destroy = async (req: Request, res: Response) => {
   res.json(deleted);
 };
 
-const person_routes = (app: express.Application) => {
-  app.get("/persons", index);
-  app.get("/persons/:id", show);
-  app.post("/persons", create);
+const order_routes = (app: express.Application) => {
+  app.get("/orders", index);
+  app.get("/orders/:id", show);
+  app.post("/orders", create);
   app.delete("./articles/:id", destroy);
 };
 
-export default person_routes;
+export default order_routes;

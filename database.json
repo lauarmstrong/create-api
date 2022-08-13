@@ -3,14 +3,14 @@
     "driver": "pg",
     "host": "localhost",
     "database": "products_dev",
-    "user": "lauren_armstrong",
-    "password": "armstrong123"
+    "user": "postgres",
+    "password": "password"
   },
   "test": {
     "driver": "pg",
     "host": "localhost",
     "database": "products_dev",
     "user": "test_user",
-    "password": "armstrong123"
+    "password": "password"
   }
 }
