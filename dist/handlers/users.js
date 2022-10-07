@@ -161,6 +161,6 @@ var user_routes = function (app) {
     //Only logged-in users can create, update or delete a user
     app.post("/users", verifyAuthToken, create);
     app.put("/users/:id", update);
-    app["delete"]("./articles/:id", verifyAuthToken, destroy);
+    app["delete"]("./users/:id", verifyAuthToken, destroy);
 };
 exports["default"] = user_routes;

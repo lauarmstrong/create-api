@@ -4,16 +4,33 @@ import { User, UserStore } from "../models/user";
 
 const store = new UserStore();
 
-const verifyAuthToken = (req: Request, res: Response, next) => {
+const verifyAuthToken = (req: Request, res: Response, next: () => void) => {
   try {
     const authorizationHeader = req.headers.authorization;
-    const token = authorizationHeader.split(" ")[1];
+    const token = authorizationHeader?.split(" ")[1];
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
     next();
     //Failed authentification error
   } catch (error) {
     res.status(401);
+    // res.json('Access denied, invalid token' + error)
+    // return
+  }
+};
+
+const authenticate = async (req: Request, res: Response) => {
+  const user: User = {
+    username: req.body.username,
+    password: req.body.password,
+  };
+  try {
+    const u = await store.authenticate(user.username, user.password);
+    var token = jwt.sign({ user: u }, process.env.TOKEN_SECRET);
+    res.json(token);
+  } catch (error) {
+    res.status(401);
+    res.json(error);
   }
 };
 
@@ -51,7 +68,7 @@ const update = async (req: Request, res: Response) => {
   };
   try {
     const authorizationHeader = req.headers.authorization;
-    const token = authorizationHeader.split(" ")[1];
+    const token = authorizationHeader?.split(" ")[1];
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     if (decoded.id !== user.id) {
       throw new Error("User id does not match!");
@@ -82,7 +99,7 @@ const user_routes = (app: express.Application) => {
   //Only logged-in users can create, update or delete a user
   app.post("/users", verifyAuthToken, create);
   app.put("/users/:id", update);
-  app.delete("./articles/:id", verifyAuthToken, destroy);
+  app.delete("./users/:id", verifyAuthToken, destroy);
 };
 
 export default user_routes;

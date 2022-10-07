@@ -106,6 +106,6 @@ var product_routes = function (app) {
     app.get("/products", index);
     app.get("/products/:id", show);
     app.post("/products", create);
-    app["delete"]("./articles/:id", destroy);
+    app["delete"]("./products/:id", destroy);
 };
 exports["default"] = product_routes;

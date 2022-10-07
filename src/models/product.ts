@@ -1,3 +1,4 @@
+//@ts-ignore
 import client from "../database";
 
 export type Product = {

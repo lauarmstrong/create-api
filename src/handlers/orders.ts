@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import { Order, OrderStore } from "../models/order";
 
 const store = new OrderStore();
@@ -50,7 +50,8 @@ const order_routes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/:id", show);
   app.post("/orders", create);
-  app.delete("./articles/:id", destroy);
+  //should be products?
+  app.delete("./orders/:id", destroy);
 };
 
 export default order_routes;

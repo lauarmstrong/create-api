@@ -1,7 +1,8 @@
+// @ts-ignore
 import { Client } from "../database";
 
 export type Order = {
-  id: number;
+  id?: number;
   timestamp: Date;
   user_id: string;
   status: string;
@@ -48,7 +49,7 @@ export class OrderStore {
 
       return order;
     } catch (err) {
-      throw new Error(`Could not add new order ${timestamp}. Error: ${err}`);
+      throw new Error(`Could not add new order ${p.timestamp}. Error: ${err}`);
     }
   }
 

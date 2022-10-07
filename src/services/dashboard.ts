@@ -1,7 +1,6 @@
 // dashboard runs SQL queries to READ information from the database
 
-// Example
-
+//@ts-ignore
 import Client from "../database";
 
 export class DashboardQueries {
