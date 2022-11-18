@@ -4,7 +4,7 @@
 import Client from "../database";
 
 export class DashboardQueries {
-  // Get all products that have been included in orders
+  // SQL JOIN to get all products that have been included in all orders
   async productsInOrders(): Promise<
     { name: string; price: number; order_id: string }[]
   > {
@@ -20,7 +20,7 @@ export class DashboardQueries {
 
       return result.rows;
     } catch (err) {
-      throw new Error(`unable get products and orders: ${err}`);
+      throw new Error(`Unable to get products from orders: ${err}`);
     }
   }
 }

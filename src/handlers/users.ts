@@ -1,21 +1,24 @@
 import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { User, UserStore } from "../models/user";
 
 const store = new UserStore();
 
-const verifyAuthToken = (req: Request, res: Response, next: () => void) => {
+export const verifyAuthToken = (
+  req: Request,
+  res: Response,
+  next: () => void
+) => {
   try {
     const authorizationHeader = req.headers.authorization;
     const token = authorizationHeader?.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as Secret);
 
     next();
-    //Failed authentification error
   } catch (error) {
+    //Failed authentification error
     res.status(401);
-    // res.json('Access denied, invalid token' + error)
-    // return
+    res.json("Access denied, invalid token" + error);
   }
 };
 
@@ -26,9 +29,10 @@ const authenticate = async (req: Request, res: Response) => {
   };
   try {
     const u = await store.authenticate(user.username, user.password);
-    var token = jwt.sign({ user: u }, process.env.TOKEN_SECRET);
+    var token = jwt.sign({ user: u }, process.env.TOKEN_SECRET as Secret);
     res.json(token);
   } catch (error) {
+    //Failed authentification error
     res.status(401);
     res.json(error);
   }
@@ -52,7 +56,7 @@ const create = async (req: Request, res: Response) => {
     };
 
     const newUser = await store.create(user);
-    var token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET);
+    var token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET as Secret);
     res.json(token);
   } catch (error) {
     res.status(400);
@@ -66,14 +70,16 @@ const update = async (req: Request, res: Response) => {
     username: req.body.username,
     password: req.body.password,
   };
+  // Users can only edit their own information
   try {
     const authorizationHeader = req.headers.authorization;
     const token = authorizationHeader?.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as Secret);
     if (decoded.id !== user.id) {
       throw new Error("User id does not match!");
     }
   } catch (err) {
+    //Failed authentification error
     res.status(401);
     res.json(err);
     return;
@@ -84,7 +90,7 @@ const update = async (req: Request, res: Response) => {
     res.json(updated);
   } catch (err) {
     res.status(400);
-    res.json(err + user);
+    res.json(err);
   }
 };
 
@@ -100,6 +106,7 @@ const user_routes = (app: express.Application) => {
   app.post("/users", verifyAuthToken, create);
   app.put("/users/:id", update);
   app.delete("./users/:id", verifyAuthToken, destroy);
+  app.post("/authenticate", authenticate);
 };
 
 export default user_routes;

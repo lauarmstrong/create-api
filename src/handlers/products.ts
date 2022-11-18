@@ -36,14 +36,21 @@ const create = async (req: Request, res: Response) => {
     const newProduct = await store.create(product);
     res.json(newProduct);
   } catch (error) {
+    // invalid http request
     res.status(400);
     res.json(error);
   }
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(req.body.id);
+    res.json(deleted);
+  } catch (error) {
+    // invalid http request
+    res.status(400);
+    res.json(error);
+  }
 };
 
 const product_routes = (app: express.Application) => {
