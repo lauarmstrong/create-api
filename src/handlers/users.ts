@@ -39,13 +39,21 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const index = async (req: Request, res: Response) => {
-  const users = await store.index();
-  res.json(users);
+  try {
+    const users = await store.index();
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const show = async (req: Request, res: Response) => {
-  const user = await store.show(req.params.id);
-  res.json(user);
+  try {
+    const user = await store.show(req.params.id);
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
@@ -95,8 +103,12 @@ const update = async (req: Request, res: Response) => {
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(req.body.id);
+    res.json(deleted);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const user_routes = (app: express.Application) => {

@@ -15,8 +15,12 @@ const index = async (_req: Request, res: Response) => {
 };
 
 const show = async (req: Request, res: Response) => {
-  const order = await store.show(req.params.id);
-  res.json(order);
+  try {
+    const order = await store.show(req.params.id);
+    res.json(order);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
@@ -49,8 +53,12 @@ const create = async (req: Request, res: Response) => {
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(req.body.id);
+    res.json(deleted);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const addProduct = async (_req: Request, res: Response) => {
