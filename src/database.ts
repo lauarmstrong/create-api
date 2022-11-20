@@ -11,7 +11,7 @@ const {
   POSTGRES_TEST_DB,
 } = process.env;
 
-let client;
+let client = new Pool({});
 
 // Connection to the database
 if (ENV === "dev") {

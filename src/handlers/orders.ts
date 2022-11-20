@@ -31,9 +31,6 @@ const create = async (req: Request, res: Response) => {
   };
   // Only logged-in users can create an order
   try {
-    // const authorizationHeader = req.headers.authorization
-    // const token = authorizationHeader.split(' ')[1]
-    // jwt.verify(token, process.env.TOKEN_SECRET)
     const newOrder = await store.create(order);
     jwt.sign({ order: newOrder }, process.env.TOKEN_SECRET as Secret);
   } catch (error) {

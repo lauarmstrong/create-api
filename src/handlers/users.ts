@@ -10,9 +10,10 @@ export const verifyAuthToken = (
   next: () => void
 ) => {
   try {
-    const authorizationHeader = req.headers.authorization;
-    const token = authorizationHeader?.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as Secret);
+    const authorizationHeader: string = req.headers
+      .authorization as unknown as string;
+    const token = authorizationHeader.split(" ")[1];
+    jwt.verify(token, process.env.TOKEN_SECRET as Secret);
 
     next();
   } catch (error) {
@@ -79,19 +80,19 @@ const update = async (req: Request, res: Response) => {
     password: req.body.password,
   };
   // Users can only edit their own information
-  try {
-    const authorizationHeader = req.headers.authorization;
-    const token = authorizationHeader?.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as Secret);
-    if (decoded.id !== user.id) {
-      throw new Error("User id does not match!");
-    }
-  } catch (err) {
-    //Failed authentification error
-    res.status(401);
-    res.json(err);
-    return;
-  }
+  // try {
+  //   const authorizationHeader: string = (req.headers.authorization as unknown) as string;
+  //   const token = authorizationHeader.split(" ")[1];
+  //   const decoded = jwt.verify(token, process.env.TOKEN_SECRET as Secret);
+  //   if (decoded.id !== user.id) {
+  //     throw new Error("User id does not match!");
+  //   }
+  // } catch (err) {
+  //   //Failed authentification error
+  //   res.status(401);
+  //   res.json(err);
+  //   return;
+  // }
 
   try {
     const updated = await store.create(user);

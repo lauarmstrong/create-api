@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-// import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { Product, ProductStore } from "../models/product";
 
 const store = new ProductStore();
@@ -23,25 +23,17 @@ const show = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-  //   try {
-  //     const authorizationHeader = req.headers.authorization
-  //     const token = authorizationHeader.split(' ')[1]
-  //     jwt.verify(token, process.env.TOKEN_SECRET)
-  //   } catch (error) {
-  //       //Failed authentification error
-  //       res.status(401)
-  //       res.json(`Invalid token ${error}`)
-  //       return
-  //   }
+  const product: Product = {
+    name: req.body.name,
+    price: req.body.price,
+    imageUrl: req.body.imageUrl,
+    productCode: req.body.productCode,
+  };
 
   try {
-    const product: Product = {
-      name: req.body.name,
-      price: req.body.price,
-      imageUrl: req.body.imageUrl,
-      productCode: req.body.productCode,
-    };
     const newProduct = await store.create(product);
+    jwt.sign({ product: newProduct }, process.env.TOKEN_SECRET as Secret);
+
     res.json(newProduct);
   } catch (error) {
     // invalid http request
