@@ -10,5 +10,16 @@ services:
     volumes:
       - "postgres:/var/lib/postgresql/data"
 
+  web:
+    build: .
+    # command: ["npm", "run", "create"]
+    links:
+      - postgres
+    image: postgres
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+
 volumes:
   postgres:

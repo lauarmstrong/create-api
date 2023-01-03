@@ -23,16 +23,15 @@ This application makes use of the following libraries:
 
 Add a .env file with the following variables:
 
-POSTGRES_HOST=127.0.0.1
+POSTGRES_HOST=my-postgres
+DB_PORT=3000
 POSTGRES_DB = products_dev
 POSTGRES_USER = postgres
 POSTGRES_PASSWORD = password123
 ENV = DEV
 POSTGRES_TEST_DB = products_test
-BCRYPT_PASSWORD = (your-very-secret-password)
+BCRYPT_PASSWORD = very-secret-password
 SALT_ROUNDS = 10
-TOKEN_SECRET=(your_token)
-PORT=3000
 
 ## Database setup
 
@@ -45,7 +44,7 @@ In the .env file, change:
 
 POSTGRES_HOST=127.0.0.1 POSTGRES_USER=postgres
 
-run: docker build -t sql-express-products . and docker compose up, then navigate to http://localhost:3000
+run: docker build -t sql-express-products . and docker-compose up, then navigate to http://localhost:3000
 
 ## Starting the App
 
